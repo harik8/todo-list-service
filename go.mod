@@ -1,4 +1,4 @@
-module github.com/harik8/todo-list-service.git
+module github.com/harik8/todo-list-service
 
 go 1.13
 
