@@ -1,4 +1,4 @@
-package dbhandler
+package dbexecutor
 
 import (
 	"context"
@@ -7,7 +7,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
-	"github.com/harik8/todo-list-service/dbhandler"
+	"github.com/harik8/todo-list-service/dbconnector"
 )
 
 type todo struct {

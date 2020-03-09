@@ -6,7 +6,7 @@ import (
 
 	"github.com/gorilla/mux"
 
-	"github.com/harik8/todo-list-service/dbhandler"
+	"github.com/harik8/todo-list-service/dbexecutor"
 )
 
 func addTodoHandler(w http.ResponseWriter, r *http.Request) {
