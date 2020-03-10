@@ -20,6 +20,7 @@ func GetClient() *mongo.Client {
 	**/
 	//	clientOptions := options.Client().ApplyURI(os.Getenv("MONGO_URI"))
 	clientOptions := options.Client().ApplyURI("mongodb+srv://admin:admin@mongo0-e3lih.mongodb.net/test?retryWrites=true&w=majority")
+	//clientOptions := options.Client().ApplyURI("mongodb://192.168.64.5:31235")
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
 		panic(err)
