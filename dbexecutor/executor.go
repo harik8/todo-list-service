@@ -6,11 +6,12 @@ import (
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 
-	"github.com/harik8/todo-list-service/dbconnector"
+	conn "github.com/harik8/todo-list-service/dbconnector"
 )
 
-type todo struct {
+type Todo struct {
 	//	TID			primitive.ObjectID 	`json:"_id" 			bson:"_id"`
 	task     string `json:"task" 			bson:"task"`
 	duedate  string `json:"duedate" 		bson:"duedate"`
@@ -18,21 +19,33 @@ type todo struct {
 	comments string `json:"comments"  		bson:"comments"`
 }
 
-func addTodo(t todo) *mongo.InsertOneResult {
-	client := getClient()
-	collection := getCollection(client)
+// func AddTodo(t Todo) *mongo.InsertOneResult {
+// 	client := conn.GetClient()
+// 	collection := conn.GetCollection(client)
+// 	defer client.Disconnect(context.TODO())
+// 	log.Println(t)
+// 	insertResult, err := collection.InsertOne(context.TODO(), t)
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+// 	return insertResult
+// }
+
+func AddTodo(t Todo) *mongo.InsertOneResult {
+	client := conn.GetClient()
+	collection := conn.GetCollection(client)
 	defer client.Disconnect(context.TODO())
 
 	insertResult, err := collection.InsertOne(context.TODO(), t)
 	if err != nil {
-		log.Fatal(err)
+			log.Fatal(err)
 	}
 	return insertResult
 }
 
-func updateTodo(tid primitive.ObjectID, t todo) error {
-	client := getClient()
-	collection := getCollection(client)
+func UpdateTodo(tid primitive.ObjectID, t Todo) error {
+	client := conn.GetClient()
+	collection := conn.GetCollection(client)
 	defer client.Disconnect(context.TODO())
 
 	filter := bson.D{primitive.E{Key: "_id", Value: tid}}
@@ -47,18 +60,18 @@ func updateTodo(tid primitive.ObjectID, t todo) error {
 	return err
 }
 
-func deleteTodo(tid primitive.ObjectID) (*mongo.DeleteResult, error) {
-	client := getClient()
-	collection := getCollection(client)
+func DeleteTodo(tid primitive.ObjectID) (*mongo.DeleteResult, error) {
+	client := conn.GetClient()
+	collection := conn.GetCollection(client)
 	filter := bson.D{primitive.E{Key: "_id", Value: tid}}
 	d, err := collection.DeleteOne(context.TODO(), filter)
 	return d, err
 }
 
-func getTodo(tid primitive.ObjectID) (todo, error) {
-	var td todo
-	client := getClient()
-	collection := getCollection(client)
+func GetTodo(tid primitive.ObjectID) (Todo, error) {
+	var td Todo
+	client := conn.GetClient()
+	collection := conn.GetCollection(client)
 	defer client.Disconnect(context.TODO())
 
 	filter := bson.D{primitive.E{Key: "_id", Value: tid}}
@@ -66,13 +79,13 @@ func getTodo(tid primitive.ObjectID) (todo, error) {
 	return td, err
 }
 
-func getTodos() ([]todo, error) {
-	var td []todo
-	client := getClient()
-	collection := getCollection(client)
+func GetTodos() ([]Todo, error) {
+	var td []Todo
+	client := conn.GetClient()
+	collection := conn.GetCollection(client)
 	cur, err := collection.Find(context.TODO(), bson.D{})
 	for cur.Next(context.Background()) {
-		var t todo
+		var t Todo
 		cur.Decode(&t)
 		td = append(td, t)
 	}

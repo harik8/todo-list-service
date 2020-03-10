@@ -5,30 +5,42 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 
-	"github.com/harik8/todo-list-service/dbexecutor"
+	exec "github.com/harik8/todo-list-service/dbexecutor"
 )
 
-func addTodoHandler(w http.ResponseWriter, r *http.Request) {
+// func AddTodoHandler(w http.ResponseWriter, r *http.Request) {
+// 	/**
+// 		https://golang.org/pkg/encoding/json/#NewDecoder
+// 	**/
+// 	var td exec.Todo
+
+// 	w.Header().Set("content-type", "application/json")
+// 	json.NewDecoder(r.Body).Decode(&td)
+// 	exec.AddTodo(td)
+// 	json.NewEncoder(w).Encode(td)
+// }
+
+func AddTodoHandler(w http.ResponseWriter, r *http.Request) {
 	/**
-		https://golang.org/pkg/encoding/json/#NewDecoder
+			https://golang.org/pkg/encoding/json/#NewDecoder
 	**/
-	var td todo
+	var td exec.Todo
 
 	w.Header().Set("content-type", "application/json")
 	json.NewDecoder(r.Body).Decode(&td)
-	result := addTodo(td)
+	exec.AddTodo(td)
 	json.NewEncoder(w).Encode(td)
-	log.Println(result.InsertedID)
 }
 
-func updateTodoHandler(w http.ResponseWriter, r *http.Request) {
-	var td todo
+func UpdateTodoHandler(w http.ResponseWriter, r *http.Request) {
+	var td exec.Todo
 	w.Header().Set("content-type", "application/json")
 	params := mux.Vars(r)
 	tid, _ := primitive.ObjectIDFromHex(params["TID"])
 	json.NewDecoder(r.Body).Decode(&td)
-	err := updateTodo(tid, td)
+	err := exec.UpdateTodo(tid, td)
 	if err != nil {
 		w.Write([]byte(err.Error()))
 		return
@@ -36,11 +48,11 @@ func updateTodoHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(td)
 }
 
-func deleteTodoHandler(w http.ResponseWriter, r *http.Request) {
+func DeleteTodoHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "application/json")
 	params := mux.Vars(r)
 	tid, _ := primitive.ObjectIDFromHex(params["TID"])
-	d, err := deleteTodo(tid)
+	d, err := exec.DeleteTodo(tid)
 	if err != nil {
 		w.Write([]byte(err.Error()))
 		return
@@ -48,11 +60,11 @@ func deleteTodoHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(d)
 }
 
-func getTodoHandler(w http.ResponseWriter, r *http.Request) {
+func GetTodoHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "application/json")
 	params := mux.Vars(r)
 	tid, _ := primitive.ObjectIDFromHex(params["TID"])
-	t, err := getTodo(tid)
+	t, err := exec.GetTodo(tid)
 	if err != nil {
 		w.Write([]byte(err.Error()))
 		return
@@ -60,9 +72,9 @@ func getTodoHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(t)
 }
 
-func getTodosHandler(w http.ResponseWriter, r *http.Request) {
+func GetTodosHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "application/json")
-	t, err := getTodos()
+	t, err := exec.GetTodos()
 	if err != nil {
 		w.Write([]byte(err.Error()))
 		return

@@ -1,18 +1,21 @@
 package main
 
 import (
-	"log"
+	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/harik8/todo-list-service/routehandler"
+	route "github.com/harik8/todo-list-service/routehandler"
 )
 
 func main() {
 	r := mux.NewRouter()
-	r.HandleFunc("/todo/", addTodoHandler).Methods("POST")
-	r.HandleFunc("/todo/", getTodosHandler).Methods("GET")
-	r.HandleFunc("/todo/{TID}", getTodoHandler).Methods("GET")
-	r.HandleFunc("/todo/{TID}", updateTodoHandler).Methods("PUT")
-	r.HandleFunc("/todo/{TID}", deleteTodoHandler).Methods("DELETE")
-	log.Fatal(http.ListenAndServe(":8080", r))
+	r.HandleFunc("/todo/", 		route.AddTodoHandler).Methods("POST")
+	r.HandleFunc("/todo/", 		route.GetTodosHandler).Methods("GET")
+	r.HandleFunc("/todo/{TID}", route.GetTodoHandler).Methods("GET")
+	r.HandleFunc("/todo/{TID}", route.UpdateTodoHandler).Methods("PUT")
+	r.HandleFunc("/todo/{TID}", route.DeleteTodoHandler).Methods("DELETE")
+	err := http.ListenAndServe(":8080", r)
+	if err != nil {
+		panic(err)
+	}
 }
