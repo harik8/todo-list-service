@@ -26,10 +26,13 @@ spec:
         memory: 256Mi
     tty: true
     volumeMounts:
-    - name: docker-config
-      mountPath: /kaniko/.docker/
+    - name: registry-cred
+      mountPath: /root
   volumes:
-    - name: docker-config
-      configMap:
-        name: docker-config
+    - name: registry-cred
+      secret:
+        secretName: registry-cred
+        items:
+          - key: .dockerconfigjson
+            path: .docker/config.json
   restartPolicy: Never
