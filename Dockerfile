@@ -4,17 +4,18 @@ LABEL HARI KARTHIGASU <hariprasad.karthigasu@gmail.com>
 
 WORKDIR /app
 
-COPY go.mod go.sum ./ \
-     . ./
+COPY ./go.mod ./go.sum ./
+
+COPY . .
 
 RUN go build .
 
-FROM gcr.io/distroless/base
+#FROM gcr.io/distroless/base
 
-WORKDIR /app
+#WORKDIR /app
 
 EXPOSE 8080
 
-COPY --from=build /app/todo-list-service .
+#COPY --from=build /app/todo-list-service .
 
-CMD ["todo-list-service"]
+CMD ["./todo-list-service"]
