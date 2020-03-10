@@ -5,38 +5,31 @@ import (
 	"context"
 	"log"
 
-	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+
+	conf "github.com/harik8/todo-list-service/config"
 )
 
+// GetClient : Get a DB instance
 func GetClient() *mongo.Client {
 	/**
-		export MONGO_URI=mongodb+srv://admin:admin@mongo0-e3lih.mongodb.net/test?retryWrites=true&w=majority
-
 		context.TODO() vs context.Background()
 		In terms of functionality: none. They are exactly the same value, bit-by-bit.
 		https://www.programming-books.io/essential/go/context-todo-vs-context-background-d5224e27ff724a33a79cb4e03a5eb333
 	**/
-	//	clientOptions := options.Client().ApplyURI(os.Getenv("MONGO_URI"))
-	clientOptions := options.Client().ApplyURI("mongodb+srv://admin:admin@mongo0-e3lih.mongodb.net/test?retryWrites=true&w=majority")
-	//clientOptions := options.Client().ApplyURI("mongodb://192.168.64.5:31235")
+	clientOptions := options.Client().ApplyURI(conf.MongoURI)
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
 		panic(err)
+	} else {
+		log.Println("Established DB connection")
 	}
 	return client
 }
 
-func GetDBNames(client *mongo.Client) []string {
-	dbs, err := client.ListDatabaseNames(context.TODO(), bson.M{})
-	if err != nil {
-		log.Fatal(err)
-	}
-	return dbs
-}
-
+// GetCollection : Func to handle DB connection
 func GetCollection(client *mongo.Client) *mongo.Collection {
-	collection := client.Database("todo").Collection("tasks")
+	collection := client.Database(conf.MongoDatabase).Collection(conf.MongoCollection)
 	return collection
 }
