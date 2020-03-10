@@ -1,8 +1,8 @@
-// todo
+#!/usr/bin/env groovy
 
 String image    = env.JOB_NAME.split('/')[1].toLowerCase()
 String registry = "harik8/$image"
-String tag      = "latest"
+String tag      = env.VERSION
 
 pipeline {
     agent {
@@ -15,12 +15,12 @@ pipeline {
     }
 
     stages {
-        stage("publish") {
+        stage("release") {
             steps {
                 container(name: 'kaniko', shell: '/busybox/sh') {
                      withEnv(['PATH+EXTRA=/busybox:/kaniko']) {
                       sh """#!/busybox/sh
-                        /kaniko/executor --context=$workspace --destination $registry:$tag
+                        /kaniko/executor --context=Dockerfile --destination $registry:$tag
                       """
                      }
                 }
