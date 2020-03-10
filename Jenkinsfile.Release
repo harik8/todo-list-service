@@ -20,7 +20,7 @@ pipeline {
                 container(name: 'kaniko', shell: '/busybox/sh') {
                      withEnv(['PATH+EXTRA=/busybox:/kaniko']) {
                       sh """#!/busybox/sh
-                        /kaniko/executor --context=Dockerfile --destination $registry:$tag
+                        /kaniko/executor --context=$workspace --destination $registry:$tag
                       """
                      }
                 }
