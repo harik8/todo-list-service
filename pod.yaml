@@ -27,12 +27,12 @@ spec:
     tty: true
     volumeMounts:
     - name: registry-cred
-      mountPath: /root
+      mountPath: /kaniko/.docker/
   volumes:
     - name: registry-cred
       secret:
         secretName: registry-cred
         items:
           - key: .dockerconfigjson
-            path: .docker/config.json
+            path: config.json
   restartPolicy: Never
