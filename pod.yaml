@@ -13,6 +13,8 @@ spec:
       requests:
         cpu: 100m
         memory: 256Mi
+    serviceAccount: jenkins-operator-todo
+    serviceAccountName: jenkins-operator-todo
   - name: kaniko
     image: gcr.io/kaniko-project/executor:debug-v0.15.0
     command:
