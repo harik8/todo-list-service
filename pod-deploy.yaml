@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kubectl
+spec:
+  containers:
+  - name: jnlp
+    image: jenkins/jnlp-slave:3.35-5-alpine
+    resources:
+      limits:
+        cpu: 200m
+        memory: 512Mi
+      requests:
+        cpu: 100m
+        memory: 256Mi
+  - name: kubectl
+    image: harik8/kubectl:v1.15.0
+    command:
+    - cat
+    tty: true
+    resources:
+      limits:
+        cpu: 200m
+        memory: 512Mi
+      requests:
+        cpu: 100m
+        memory: 256Mi
+  restartPolicy: Never
