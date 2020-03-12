@@ -1,9 +1,5 @@
 #!/usr/bin/env groovy
 
-String image    = env.JOB_NAME.split('/')[1].toLowerCase()
-String registry = "harik8/$image"
-String tag      = env.VERSION
-
 pipeline {
     agent {
     kubernetes {
@@ -18,7 +14,9 @@ pipeline {
         stage("deploy") {
             steps {
                 container('kubeclt') {
-			sh "kubectl get po --all-namespaces"
+			            sh """
+			                kubectl apply -f manifests/ -n todo
+			            """
                      }
                 }
             }

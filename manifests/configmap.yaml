@@ -10,3 +10,4 @@ data:
 kind: ConfigMap
 metadata:
   name: todo-conf
+  namespace: todo
