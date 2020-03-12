@@ -1,7 +1,7 @@
-jobs:
-    include:
-      - stage: build
-        script:
-        - git clone https://github.com/harik8/todo-list-service.git
-        - cd todo-list-service
-        - docker build -t harik8/todo:latest
+language: ruby
+
+services:
+  - docker
+
+before_install:
+  - docker build -t harik8/todo .
