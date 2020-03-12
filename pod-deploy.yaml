@@ -17,6 +17,7 @@ spec:
     image: harik8/kubectl:v1.15.0
     command:
     - cat
+    tty: true
     resources:
       limits:
         cpu: 200m
