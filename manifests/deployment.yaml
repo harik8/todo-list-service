@@ -26,8 +26,6 @@ spec:
           limits:
             memory: 512Mi
             cpu: 200m
-        port:
-        - containerPort: 8080
         envFrom:
         - configMapRef:
             name: todo-conf
