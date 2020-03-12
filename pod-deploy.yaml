@@ -15,7 +15,8 @@ spec:
         memory: 256Mi
   - name: kubectl
     image: bitnami/kubectl:1.15
-    args: ["bash"]
+    commad:
+    - bash
     resources:
       limits:
         cpu: 200m
