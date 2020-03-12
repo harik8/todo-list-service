@@ -13,14 +13,14 @@ spec:
       requests:
         cpu: 100m
         memory: 256Mi
-  - name: kubectl
-    image: bitnami/kubectl:1.15
-    command: ["bash"]
-    resources:
-      limits:
-        cpu: 200m
-        memory: 512Mi
-      requests:
-        cpu: 100m
-        memory: 256Mi
-  restartPolicy: Never
+#   - name: kubectl
+#     image: bitnami/kubectl:1.15
+#     command: ["bash"]
+#     resources:
+#       limits:
+#         cpu: 200m
+#         memory: 512Mi
+#       requests:
+#         cpu: 100m
+#         memory: 256Mi
+#   restartPolicy: Never
